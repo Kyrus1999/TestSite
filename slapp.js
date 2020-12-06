@@ -1,74 +1,67 @@
-var tmonth, tday, thour, tminute, tsec;
-var cmonth, cday, chour, cminute, csec;
+var titleName = "Slaps-Christmas";
+
+
 var memoryTable = document.getElementById("contentTable");
 
+var monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+var units = [0, 12, "xx", 24, 60, 60];
+var targetDate = [0, 0, 0, 0, 0, 0];
+var currDate = [0, 0, 0, 0, 0, 0];
+var deltaDate = [0, 0, 0, 0, 0, 0];
+var tableSlots;
 
 
 
-
-var monthDays = [31,28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 function setup() {
-  //createCanvas(500, 500);
-  //createCanvas(windowWidth, windowHeight);
-  //textSize(20);
-  //rectMode(CENTER);
-  noCanvas();
 
-  tmonth = 12;
-  tday = 24;
-  thour = 20;
-  tminute = 0;
-  tsec = 0;
+  noCanvas();
+  title.innerHTML = titleName;
+  title.style.color = "#ff0000";
+  title.style.fontSize = "50px";
+  tableSlots = [yearV, monthV, dayV, hourV, minuteV, secV];
+  let tyear = 2020;
+  let tmonth = 12;
+  let tday = 24;
+  let thour = 20;
+  let tminute = 0;
+  let tsec = 0;
+  targetDate = [tyear, tmonth, tday, thour, tminute, tsec];
+
 }
 
 function draw() {
-  background(220);
-  cmonth =  month();
-  cday = day();
-  chour = hour();
-  cminute = minute();
-  csec = second();
-  //console.log(relate());
-  text(relate(), width/2, height/2, 300, 100);
-  
-  text(day() + "." + month() + "." + year(), 0, height);
+  currDate = [year(), month(), day(), hour(), minute(), second()];
+
+  relate();
+  if (deltaDate[0] < 0) {
+    contentTable.style.display = "none";
+    eof.innerHTML = "Event has passed";
+    eof.style.color = "#ff0000";
+    noLoop();
+  }
 
 }
 
-function relate() {
-  let sec = tsec - csec;
-  let min = tminute - cminute;
-  let hour = thour -chour;
-  let day = tday - cday;
-  let mon = tmonth - cmonth;
-  if (sec < 0) {
-    sec += 60;
-    min -= 1;
+
+function relate() {
+  for (let i = 0; i < deltaDate.length; i++) {
+    deltaDate[i] = targetDate[i] - currDate[i];
   }
-  if (min < 0) {
-    min += 60;
-    hour -= 1;
+
+
+  for (let i = deltaDate.length; i > 0; i--) {
+    if (deltaDate[i] < 0) {
+      deltaDate[i] += ((i == 2) ? monthDays[(currDate[1] - 1) % 12] : units[i]);
+      deltaDate[i - 1] -= 1;
+    }
+
   }
-  if (hour < 0) {
-    hour += 24;
-    day -= 1;
+  for (let i = 0; i < tableSlots.length; i++) {
+    tableSlots[i].innerHTML = deltaDate[i];
   }
-  if (day < 0) {
-    day += monthDays[(cmonth -1) % 12];
-    console.log((cmonth -1) % 12);
-    mon -= 1;
-  }
-  monthV.innerHTML = mon;
-  dayV.innerHTML = day;
-  hourV.innerHTML = hour;
-  minuteV.innerHTML = min;
-  secV.innerHTML = sec;
-  
-  return mon + ": " + day + " : " + hour + " : " + min + " : " + sec;
+
+
+
+
 }
-
-/*function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-}*/
-
