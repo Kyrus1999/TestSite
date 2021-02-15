@@ -20,9 +20,9 @@ function setup() {
   title.style.color = "#ff0000";
   title.style.fontSize = "50px";
   tableSlots = [yearV, monthV, dayV, hourV, minuteV, secV];
-  let tyear = 2020;
-  let tmonth = 12;
-  let tday = 24;
+  let tyear = 2021;
+  let tmonth = 8;
+  let tday = 27;
   let thour = 20;
   let tminute = 0;
   let tsec = 0;
