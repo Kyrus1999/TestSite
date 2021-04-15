@@ -36,7 +36,7 @@ function draw() {
   relate();
   if (deltaDate[0] < 0) {
     contentTable.style.display = "none";
-    eof.innerHTML = "Event has passed";
+    eof.innerHTML = "Happy Birthday";
     eof.style.color = "#ff0000";
     noLoop();
   }
