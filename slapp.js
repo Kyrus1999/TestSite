@@ -20,7 +20,7 @@ let gravity;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  background(20);
+  background(20,20,20);
   colorMode(HSB);
   gravity = createVector(0, 0.2);
   stroke(255);
