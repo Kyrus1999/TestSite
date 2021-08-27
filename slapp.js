@@ -34,8 +34,8 @@ function setup() {
   let tmonth = 8;
   let tday = 27;
   let thour = 18;
-  let tminute = 17;
-  let tsec = 0;
+  let tminute = 18;
+  let tsec = 30;
   targetDate = [tyear, tmonth, tday, thour, tminute, tsec];
 
   
