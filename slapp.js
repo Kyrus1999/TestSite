@@ -12,10 +12,20 @@ var tableSlots;
 
 
 
+var dateAchieved = false;
+
+
+const fireworks = [];
+let gravity;
 
 function setup() {
-
-  noCanvas();
+  createCanvas(windowWidth, windowHeight);
+  background(52);
+  colorMode(HSB);
+  gravity = createVector(0, 0.2);
+  stroke(255);
+  strokeWeight(4);
+  
   title.innerHTML = titleName;
   title.style.color = "#ff0000";
   title.style.fontSize = "50px";
@@ -23,23 +33,33 @@ function setup() {
   let tyear = 2021;
   let tmonth = 8;
   let tday = 27;
-  let thour = 20;
-  let tminute = 0;
+  let thour = 18;
+  let tminute = 5;
   let tsec = 0;
   targetDate = [tyear, tmonth, tday, thour, tminute, tsec];
 
+  
 }
 
 function draw() {
   currDate = [year(), month(), day(), hour(), minute(), second()];
 
+  if(dateAchieved) {
+    fire();
+  } else {
   relate();
-  if (deltaDate[0] < 0) {
-    contentTable.style.display = "none";
-    eof.innerHTML = "Happy Birthday";
-    eof.style.color = "#ff0000";
-    noLoop();
+    if (deltaDate[0] < 0) {
+      contentTable.style.display = "none";
+      title.style.display = "none";
+      eof.style.display = "none";
+      eof.innerHTML = "Event has passed";
+      eof.style.color = "#ff0000";
+      dateAchieved = true;
+    }
   }
+    
+    
+  
 
 }
 
@@ -64,4 +84,27 @@ function relate() {
 
 
 
+}
+
+function fire() {
+  colorMode(RGB);
+  background(52, 52, 52, 25);
+  textAlign(CENTER, CENTER);
+  textSize(32);
+  noStroke()
+  fill(255, 0, 0);
+  text("Happy Birthday", width/2, height/2)
+  
+  if (random(1) < 0.04) {
+    fireworks.push(new Firework());
+  }
+  
+  for (let i = fireworks.length - 1; i >= 0; i--) {
+    fireworks[i].update();
+    fireworks[i].show();
+    
+    if (fireworks[i].done()) {
+      fireworks.splice(i, 1);
+    }
+  }
 }
