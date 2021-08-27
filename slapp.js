@@ -20,7 +20,7 @@ let gravity;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  background(52);
+  background(20);
   colorMode(HSB);
   gravity = createVector(0, 0.2);
   stroke(255);
@@ -88,7 +88,7 @@ function relate() {
 
 function fire() {
   colorMode(RGB);
-  background(52, 52, 52, 25);
+  background(20, 20, 20, 25);
   textAlign(CENTER, CENTER);
   textSize(32);
   noStroke()
