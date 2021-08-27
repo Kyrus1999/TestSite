@@ -32,7 +32,7 @@ function setup() {
   tableSlots = [yearV, monthV, dayV, hourV, minuteV, secV];
   let tyear = 2021;
   let tmonth = 8;
-  let tday = 27;
+  let tday = 28;
   let thour = 20;
   let tminute = 0;
   let tsec = 0;
