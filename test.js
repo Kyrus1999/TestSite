@@ -1,76 +1,108 @@
-// subtract 1 from month since month is null based 
-const targetDate = new Date(2021, 8 - 1, 27);
-let yearNode, dayNode, hourNode, minNode, secNode, eof;
-function getTimeDifferenceToNow(toDate) {
-    const now = new Date();
-    const millisecondsInBetween = toDate - now;
-    const isInFuture = millisecondsInBetween > 0;
-    let seconds = Math.trunc(millisecondsInBetween / 1000);
-    let minutes = Math.trunc(seconds / 60);
-    seconds %= 60;
-    let hours = Math.trunc(minutes / 60);
-    minutes %= 60;
-    let days = Math.trunc(hours / 24);
-    hours %= 24;      
-    // ignore leap years
-    let years = Math.trunc(days / 365);
-    days %= 365;
-    return {years, days, hours, minutes, seconds, isInFuture};
+var titleName = "Slaps-Christmas";
+
+
+var memoryTable = document.getElementById("contentTable");
+
+var monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+var units = [0, 12, "xx", 24, 60, 60];
+var targetDate = [0, 0, 0, 0, 0, 0];
+var currDate = [0, 0, 0, 0, 0, 0];
+var deltaDate = [0, 0, 0, 0, 0, 0];
+var tableSlots;
+
+var dateAchieved = false;
+
+
+const fireworks = [];
+let gravity;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  background(52);
+  colorMode(HSB);
+  gravity = createVector(0, 0.2);
+  stroke(255);
+  strokeWeight(4);
+  
+  title.innerHTML = titleName;
+  title.style.color = "#ff0000";
+  title.style.fontSize = "50px";
+  tableSlots = [yearV, monthV, dayV, hourV, minuteV, secV];
+  let tyear = 2021;
+  let tmonth = 8;
+  let tday = 27;
+  let thour = 18;
+  let tminute = 5;
+  let tsec = 0;
+  targetDate = [tyear, tmonth, tday, thour, tminute, tsec];
+
+  
+}
+
+function draw() {
+  currDate = [year(), month(), day(), hour(), minute(), second()];
+
+  if(dateAchieved) {
+    fire();
+  } else {
+  relate();
+    if (deltaDate[0] < 0) {
+      contentTable.style.display = "none";
+      title.style.display = "none";
+      eof.style.display = "none";
+      eof.innerHTML = "Event has passed";
+      eof.style.color = "#ff0000";
+      dateAchieved = true;
+    }
+  }
+    
+    
+  
+
+}
+
+
+function relate() {
+  for (let i = 0; i < deltaDate.length; i++) {
+    deltaDate[i] = targetDate[i] - currDate[i];
+  }
+
+
+  for (let i = deltaDate.length; i > 0; i--) {
+    if (deltaDate[i] < 0) {
+      deltaDate[i] += ((i == 2) ? monthDays[(currDate[1] - 1) % 12] : units[i]);
+      deltaDate[i - 1] -= 1;
     }
 
-function update() {
-    const timeDiff = getTimeDifferenceToNow(targetDate);
-    if (timeDiff.isInFuture) {
-        displayTimeDiff(timeDiff);
-        setTimeout(update, 500);
-        return;
+  }
+  for (let i = 0; i < tableSlots.length; i++) {
+    tableSlots[i].innerHTML = deltaDate[i];
+  }
+
+
+
+
+}
+
+function fire() {
+  colorMode(RGB);
+  background(52, 52, 52, 25);
+  textAlign(CENTER, CENTER);
+  textSize(32);
+  noStroke()
+  fill(255, 0, 0);
+  text("Happy Birthday", width/2, height/2)
+  
+  if (random(1) < 0.04) {
+    fireworks.push(new Firework());
+  }
+  
+  for (let i = fireworks.length - 1; i >= 0; i--) {
+    fireworks[i].update();
+    fireworks[i].show();
+    
+    if (fireworks[i].done()) {
+      fireworks.splice(i, 1);
     }
-    setMessage('Target reached');
+  }
 }
-
-function setMessage(msg) {
-    yearNode.hidden = true;
-    dayNode.hidden = true;
-    hourNode.hidden = true;
-    minNode.hidden = true;
-    secNode.hidden = true;
-    eof.hidden = false;
-    eof.textContent = msg;
-}
-
-function displayTimeDiff(timeDiff) {
-    yearNode.innerText = `${timeDiff.years} Years`;
-    dayNode.innerText = `${('' + timeDiff.days).padStart(3, '0')} Days`;
-    hourNode.innerText = `${('' + timeDiff.hours).padStart(2, '0')} Hours`;
-    minNode.innerText = `${('' + timeDiff.minutes).padStart(2, '0')} Minutes`;
-    secNode.innerText = `${('' + timeDiff.seconds).padStart(2, '0')} Seconds`;
-}
-
-function createTimeNode(id) {
-    const node = document.createElement('span');
-    node.appendChild(document.createTextNode(''));
-    node.id = id;
-    document.getElementsByTagName('body')[0].appendChild(node);
-    return node;
-}
-
-function createHiddenNode(id) {
-    const node = document.createElement('span');
-    node.appendChild(document.createTextNode(''));
-    node.id = id;
-    node.hidden = true;
-    document.getElementsByTagName('body')[0].appendChild(node);
-    return node;
-}
-
-function setUpNodesIfNotExisting() {
-    yearNode = document.getElementById('year') ?? createTimeNode('year');
-    dayNode = document.getElementById('day') ?? createTimeNode('day');
-    hourNode = document.getElementById('hour') ?? createTimeNode('hour');
-    minNode = document.getElementById('min') ?? createTimeNode('min');
-    secNode = document.getElementById('sec') ?? createTimeNode('sec');
-    eof = document.getElementById('eof') ?? createHiddenNode('eof');
-}
-
-setUpNodesIfNotExisting();
-update();
