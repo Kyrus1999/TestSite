@@ -33,9 +33,9 @@ function setup() {
   let tyear = 2021;
   let tmonth = 8;
   let tday = 27;
-  let thour = 18;
-  let tminute = 18;
-  let tsec = 30;
+  let thour = 20;
+  let tminute = 0;
+  let tsec = 0;
   targetDate = [tyear, tmonth, tday, thour, tminute, tsec];
 
   
