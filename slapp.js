@@ -30,11 +30,11 @@ function setup() {
   title.style.color = "#ff0000";
   title.style.fontSize = "50px";
   tableSlots = [yearV, monthV, dayV, hourV, minuteV, secV];
-  let tyear = 2021;
-  let tmonth = 8;
-  let tday = 27;
-  let thour = 18;
-  let tminute = 5;
+  let tyear = 2022;
+  let tmonth = 4;
+  let tday = 6;
+  let thour = 20;
+  let tminute = 0;
   let tsec = 0;
   targetDate = [tyear, tmonth, tday, thour, tminute, tsec];
 
@@ -93,7 +93,7 @@ function fire() {
   textSize(32);
   noStroke()
   fill(255, 0, 0);
-  text("Happy Birthday", width/2, height/2)
+  text("Happy Birthday Melvin", width/2, height/2)
   
   if (random(1) < 0.04) {
     fireworks.push(new Firework());
